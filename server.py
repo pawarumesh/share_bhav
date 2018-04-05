@@ -40,7 +40,7 @@ class BhavCopyServer(object):
                                LOW=a['LOW'],CLOSE=a['CLOSE'],GAIN=a['GAIN'])
         except:
             print('enter correct name')
-            raise cherrypy.HTTPError(404, "Could not find a track with that URI.")
+            raise cherrypy.HTTPError(404, "Could not find a stock with that Name.")
 
         return json.dumps(response_dict)
 
