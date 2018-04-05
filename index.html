@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BhavCopy</title>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css" />
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+input[type=text]#ip1{
+
+    height: 42px;
+    border: 2px solid #ECECEC;
+    width: 180px;
+    padding-left: 15px;
+    font-family: "IBMPlexSansSemiBold";
+    padding-right: 0px;
+    font-size: 19px;
+    color: #000000;
+		background-color: #FDFDFD;
+
+
+}
+
+button#btn{
+    width: 50px;
+    height: 40px;
+    margin-left: -50px;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+}
+</style>
+
+
+
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" role="navigation" style="margin-bottom: 0">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">BSE Equity BhavCopy</a>
+
+        </div>
+    </nav>
+    <p>&nbsp;</p>
+
+
+    <div class="row">
+        <div class="col-md-10">
+            <table id="example2" class="table table-bordered table-striped">
+
+
+                <thead>
+                <tr>
+                    <td colspan="5"><h4>Enter stock name to get price</h4> </td>
+                    <td colspan="2">
+                        <input type="text" id="ip1" placeholder="Search.." name="search">
+                        <button id="btn"><i class="fa fa-search"></i></button>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th><span>SC_CODE</span></th>
+                    <th><span>SC_NAME</span></th>
+                    <th><span>OPEN</span></th>
+                    <th><span>HIGH</span></th>
+                    <th><span>LOW</span></th>
+                    <th><span>CLOSE</span></th>
+                    <th><span>GAIN</span></th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr id ="abc">
+
+                </tr>
+
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <p>&nbsp;</p>
+
+    <div class="row">
+        <div class="col-md-10">
+
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr><td colspan="7">TOP 10 STOCK</td>>
+                </tr>
+
+
+                <tr>
+                <th><span>SC_CODE</span></th>
+                <th><span>SC_NAME</span></th>
+                <th><span>OPEN</span></th>
+                <th><span>HIGH</span></th>
+                <th><span>LOW</span></th>
+                <th><span>CLOSE</span></th>
+                <th><span>GAIN</span></th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+                % for row in data:
+                <tr>
+
+                    <td>${row["SC_CODE"]}</td>
+                    <td>${row["SC_NAME"]}</td>
+                    <td>${row["OPEN"]}</td>
+                    <td>${row["HIGH"]}</td>
+                    <td>${row["LOW"]}</td>
+                    <td>${row["CLOSE"]}</td>
+                    <td>${row["GAIN"]}</td>
+
+                </tr>
+
+                % endfor
+
+                </tbody>
+
+
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+
+<script>
+    $(document).ready(function() {
+    $('#example1').DataTable();
+} );
+
+</script>
+<script>
+$(document).ready(function(){
+    $("#btn").click(function(){
+
+    getstockdata($("#ip1").val())
+
+    });
+});
+
+function getstockdata(input_string){
+  html_string=""
+
+  $.ajax({
+    url: "/search?search="+ input_string,
+    type: "GET",
+    dataType: "json",
+    contentType: "application/json",
+    complete: function() {
+    },
+    success: function(data) {
+      console.log('Filter Count process error');
+
+      $.each(data, function(index, value){
+        html_string +="<td>"+value+"</td>";
+
+
+
+      });
+
+
+      $('#abc').html(html_string);
+
+    },
+    error: function(){
+      html_string="<td colspan=\"7\">Enter correct term data not found</td>"
+      $('#abc').html(html_string);
+      console.log('Filter Count process error');
+    },
+  });
+}
+
+
+
+</script>
+
+
+</body>
+</html>
